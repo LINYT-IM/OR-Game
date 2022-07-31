@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1-D Knapsack Problem</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+      integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" href="images/backpack.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/Knapsack.css" />
+  </head>
+  <body class="sub-site">
+    <div class="back">
+      <a href="index.html"><img src="./images/back-button.svg" /></a>
+    </div>
+    <div class="title-Knapsack">1-D背包問題 1-D Knapsack Problem</div>
+    <div class="content">
+      <div class="container Knapsack">
+        <table class="table-Knapsack">
+          <tr>
+            <td>問題:</td>
+          </tr>
+          <tr>
+            <td class="prob-des">
+              現有一個背包，只能裝總重量不超過<span id="weight-limit"></span
+              >公克的物品，同時有以下<span id="node_n"></span
+              >種物品，分別有不同的價值與重量。請找出最佳的選擇組合以達到最佳的效益:
+            </td>
+          </tr>
+          <tr class="ans-segment">
+            <td>
+              <div class="ui divider"></div>
+              你的選擇:
+            </td>
+          </tr>
+
+          <tr class="ans-btn">
+            <td><button class="start-Knapsack">送出</button></td>
+            <td><button class="reset-Knapsack">清除</button></td>
+          </tr>
+        </table>
+      </div>
+      <div id="result" class="result container">
+        <table class="table-result">
+          <tr>
+            <td>目標值:</td>
+          </tr>
+          <tr>
+            <td><span class="Obj"></span></td>
+          </tr>
+          <tr>
+            <td><span>Gap:</span></td>
+          </tr>
+          <tr>
+            <td><span class="Gap"></span>%</td>
+          </tr>
+          <tr>
+            <td><span>Best:</span></td>
+          </tr>
+          <tr>
+            <td><span class="Best"></span>%</td>
+          </tr>
+          <tr>
+            <td class="alert"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <script src="./js/Knapsack.js"></script>
+  </body>
+</html>

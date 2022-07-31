@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Traveling Salesman Problem</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+      integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.22.1/cytoscape.min.js"
+      integrity="sha512-KTe+SDYh8ExHDmrSZuoKkFoFQDSU3ywInRi9SkE0ENpJu72GS+UAxd/l0CAXF8DaGGGOLKd7wKRoa7mEirvIpg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
+      integrity="sha512-8bHTC73gkZ7rZ7vpqUQThUDhqcNFyYi2xgDgPDHc+GXVGHXq+xPjynxIopALmOPqzo9JZj0k6OqqewdGO3EsrQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="icon" href="images/travel.png" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="stylesheet" href="./css/TSP.css" />
+    <script type="text/javascript" src="./src/TSPdata.js"></script>
+  </head>
+  <body class="sub-site site-TSP">
+    <div class="back">
+      <a href="index.html"><img src="./images/back-button.svg" /></a>
+    </div>
+    <div class="content" style="align-items: flex-end">
+      <div class="title-TSP">旅行推銷員問題 Traveling Salesman Problem</div>
+      <div class="container TSP">
+        <table class="table-TSP">
+          <tr>
+            <td colspan="4"><b>問題:</b></td>
+          </tr>
+          <tr>
+            <td colspan="4" class="prob-des">
+              以下給定一系列城市及任兩個城市間的距離，請找出造訪每個城市一次並回到起始城市的最短路線。
+              <!-- <img class="sys-image" src="./images/Hand.svg" alt=""> -->
+              <div class="ui divider"></div>
+              <b> 網路圖:</b
+              ><span style="font-size: 15px; margin-left: 5px"
+                >(點擊各點查看詳細資訊)</span
+              >
+            </td>
+          </tr>
+          <tr>
+            <td class="graph" colspan="3">
+              <div id="cy-show"></div>
+            </td>
+            <td colspan="1">
+              <div class="detail-table">
+                <table
+                  class="detail-t hidden ui celled striped very compact padded green table"
+                >
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>Destination</th>
+                      <th>distance</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="4">
+              <div class="ui divider"></div>
+              <b> 作答區:</b
+              ><span style="font-size: 15px; margin-left: 5px"
+                >(點擊各點進行連線，或點選節線以刪除)</span
+              >
+              <!-- <img class="sys-image" src="./images/Hand.svg" alt=""> -->
+            </td>
+          </tr>
+          <tr>
+            <td class="graph" colspan="4">
+              <div id="cy"></div>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="4">
+              <div class="ui divider"></div>
+              <!-- input -->
+              <div class="ui form">
+                <div class="field">
+                  <label>List (請以逗號隔開節點index)</label>
+                  <input class="ans" type="text" placeholder="[1,2,...]" />
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="ans-btn" colspan="2">
+              <button class="start-TSP">送出</button>
+            </td>
+            <td class="ans-btn" colspan="2">
+              <button class="reset-TSP">清除</button>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div id="result" class="result container sticky">
+        <table class="table-result">
+          <tr>
+            <td>目標值:</td>
+          </tr>
+          <tr>
+            <td><span class="Obj"></span></td>
+          </tr>
+          <tr>
+            <td><span>Gap:</span></td>
+          </tr>
+          <tr>
+            <td><span class="Gap"></span>%</td>
+          </tr>
+          <tr>
+            <td><span>Best:</span></td>
+          </tr>
+          <tr>
+            <td><span class="Best"></span>%</td>
+          </tr>
+          <tr>
+            <td class="alert"></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <script src="./js/TSP.js"></script>
+  </body>
+</html>

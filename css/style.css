@@ -1,0 +1,344 @@
+@charset "UTF-8";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+a {
+  text-decoration: none;
+  display: block;
+}
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.7;
+  color: #fff;
+  padding: 30px;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: row;
+  margin-top: 14vh;
+  justify-content: space-around;
+}
+
+.hidden {
+  opacity: 0;
+}
+
+.sub-site {
+  /* text-align: center; */
+  background-image: linear-gradient(to right bottom, #e8b6ab, #f3dcd6);
+  height: 100vh;
+  opacity: 0;
+  animation: easeIn 0.8s ease-in;
+  animation-delay: 0.5s;
+  animation-fill-mode: forwards;
+  font-size: 40px;
+  color: #777;
+}
+
+header {
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(212, 226, 225, 0.8),
+      rgba(181, 197, 196, 0.8)
+    ),
+    url(../images/chess-316658_1280.jpg);
+  background-size: cover;
+  background-position: 10% 30%;
+  height: 25vw;
+}
+
+.title {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  font-size: 20px;
+  transform: translate(-50%, -50%);
+  letter-spacing: 12px;
+}
+
+h1 {
+  animation: easeIn 0.8s ease-out;
+}
+
+.game {
+  /* display: inline-block; */
+  height: 20vw;
+  margin-top: 1.5vw;
+  /* clip-path: polygon(0 0, 75% 0, 60% 100%, 0 100%); */
+  opacity: 0;
+  animation: fadeIn 0.8s ease-in;
+  animation-delay: 1.2s;
+  animation-fill-mode: forwards;
+  position: relative;
+  text-decoration: none;
+  color: #777;
+}
+
+.game-btn:hover {
+  transform: translateY(10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.odd {
+  background: linear-gradient(105deg, #e8b6ab 40%, #f3dcd6 55%, transparent 45%),
+    rgba(246, 246, 246, 0.9);
+}
+
+.even {
+  background: linear-gradient(-75deg, #e8b6ab 40%, #f3dcd6 55%, transparent 45%),
+    rgba(246, 246, 246, 0.9);
+}
+
+.game-title {
+  position: absolute;
+  top: 30%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  font-size: 30px;
+  width: 30%;
+}
+
+.even > div {
+  left: 20%;
+}
+
+.even > div > img {
+  left: 75%;
+}
+
+.game-image > img {
+  opacity: 0.5;
+  position: absolute;
+  top: 55%;
+  left: 25%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+}
+.description {
+  position: absolute;
+  top: 60%;
+  left: 80%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  /* color: #0b132b; */
+}
+
+@keyframes easeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  80% {
+    transform: translateY(-2px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translate(0);
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    transform: translateY(15px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes back {
+  0% {
+    transform: translateX(20px);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+}
+
+@keyframes popout {
+  0% {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+input {
+  text-align: center;
+  outline: none;
+}
+
+.back {
+  position: absolute;
+  width: 40px;
+  top: 3%;
+  left: 1%;
+  height: 40px;
+  opacity: 0.7;
+}
+
+.back:hover {
+  animation: back 0.8s linear;
+  animation-iteration-count: infinite;
+}
+
+.active {
+  opacity: 1;
+}
+
+.container {
+  width: 66vw;
+  height: 60vh;
+  background-color: #fff;
+  opacity: 0.8;
+  border-radius: 20px;
+  /* position: absolute; */
+  top: 50%;
+  left: 50%;
+  /* transform: translate(-50%, -50%); */
+  overflow: hidden;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+table {
+  /* position: absolute; */
+  top: 45%;
+  left: 50%;
+  /* transform: translate(-50%, -50%); */
+  font-size: 25px;
+  /* width: 100%; */
+  margin: 10px auto;
+}
+
+td {
+  height: 50px;
+  width: 25%;
+}
+
+.btn {
+  position: relative;
+  top: 80%;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  border-radius: 100px;
+  vertical-align: text-bottom;
+  transition: all 0.2s;
+  width: 150px;
+}
+
+.btn {
+  animation: popout 0.7s ease-in;
+  animation-fill-mode: both;
+  animation-delay: 2.5s;
+}
+
+.btn-anime {
+  letter-spacing: 5px;
+  font-size: 16px;
+  border: none;
+  border-radius: 100px;
+  width: 150px;
+  height: 45px;
+  outline: none;
+
+  background-color: #fff;
+  color: #80959a;
+}
+
+.btn-anime::after {
+  content: "";
+  width: 150px;
+  height: 45px;
+  z-index: -1;
+  /* display: block; */
+  top: 0;
+  left: 0;
+  transition: all 0.2s;
+  position: absolute;
+  background-color: #fff;
+  border-radius: 100px;
+}
+
+.btn-anime:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-anime:active {
+  transform: translateY(1px);
+}
+
+.btn-anime:hover::after {
+  -webkit-transform: scale(2, 1.6);
+  -moz-transform: scale(2, 1.6);
+  -o-transform: scale(2, 1.6);
+  transform: scale(2, 1.6);
+  opacity: 0;
+}
+
+.winner {
+  background-image: url("../images/crowns.svg");
+  background-position: left;
+  background-size: 35px;
+  background-repeat: no-repeat;
+}
+body::before {
+  content: "平手";
+  background-image: url("../images/racing-flag.svg");
+  background-repeat: no-repeat;
+  background-size: 260px;
+  background-position: right;
+  width: 99%;
+  height: 35%;
+  position: absolute;
+  top: 30%;
+  left: 0;
+  text-align: left;
+  padding-left: 1%;
+  padding-top: 2%;
+  font-size: 130px;
+  opacity: 0;
+  background-color: black;
+}
+
+.show::before {
+  animation: show-disappear 5s linear;
+  animation-fill-mode: backwards;
+}
+
+@keyframes show-disappear {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
