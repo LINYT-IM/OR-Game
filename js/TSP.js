@@ -1,3 +1,6 @@
+firebase.initializeApp({
+  databaseURL: "https://or-game-2ef8c-default-rtdb.firebaseio.com/",
+});
 const cytoscape = window.cytoscape;
 const TSPdatas = window.TSPdata;
 let graphwidth = {
@@ -25,8 +28,8 @@ const params = {
       style: {
         width: 3,
         "line-color": "#ccc",
-        "target-arrow-color": "#ccc",
-        "target-arrow-shape": "triangle",
+        // "target-arrow-color": "#ccc",
+        // "target-arrow-shape": "triangle",
         "curve-style": "bezier",
       },
     },
@@ -73,6 +76,7 @@ const params = {
 };
 let node = {};
 let dis = {};
+let UID = "";
 let res = {
   bestGap: 100,
 };
@@ -85,6 +89,7 @@ const DOMobj = {
   gap: document.querySelector(".Gap"),
   best: document.querySelector(".Best"),
   alert: document.querySelector(".alert"),
+  uid_btn: document.querySelector("#uid-ipt"),
 };
 var cy = cytoscape({
   container: document.getElementById("cy"),
@@ -121,10 +126,7 @@ var cy_show = cytoscape({
   const showData = function (cont) {
     for (let i = 0; i < TSPdatas["node"].length; i++) {
       let ele = TSPdatas["node"][i];
-      node[ele["data"]["id"].replace("n", "")] = [
-        ele["position"]["x"],
-        ele["position"]["y"],
-      ];
+      node[ele["data"]["id"]] = [ele["position"]["x"], ele["position"]["y"]];
       cont.add(ele);
     }
     cont.nodes().lock();
@@ -159,7 +161,9 @@ let edgDict = {};
       if (cy.$id(this.id()).style("background-color") == "rgb(0,0,0)") {
         // clear other nodes
         for (let i = 0; i < TSPdatas["node_n"]; i++) {
-          cy.$id(`n${i}`).style({ "background-color": "rgb(0, 0, 0)" });
+          cy.$id(TSPdatas["node"][i]["data"]["id"]).style({
+            "background-color": "rgb(0, 0, 0)",
+          });
         }
         color = "rgb(255,0,0)";
         showRelatedGraph(cy, this.id());
@@ -236,10 +240,8 @@ let edgDict = {};
     list = [];
     currl = [];
     for (let i = 0; i < list_str.length; i++) {
-      if (!isNaN(parseInt(list_str[i].replace(/[^0-9]/g, "")))) {
-        list.push(parseInt(list_str[i].replace(/[^0-9]/g, "")));
-        currl.push(`n${parseInt(list_str[i].replace(/[^0-9]/g, ""))}`);
-      }
+      list.push(list_str[i]);
+      currl.push(list_str[i]);
     }
     DOMobj.alert.textContent = "";
     if (checkValid(list)) {
@@ -327,25 +329,26 @@ let edgDict = {};
   }
 
   function updateInputField() {
-    list = [];
+    list = "";
     for (let i = 0; i < currlist.length; i++) {
-      list.push(parseInt(currlist[i].replace("n", "")));
+      // list.push(currlist[i]);
+      list += ` ${currlist[i]},`;
     }
     // console.log(list);
-    DOMobj.ans.value = list.toString();
+    DOMobj.ans.value = list;
   }
 
   function showRelatedGraph(cy, id) {
-    let curr = id.replace("n", "");
+    let curr = id;
     for (let i = 0; i < TSPdatas["node_n"]; i++) {
-      if (i != curr) {
+      if (id != TSPdatas["node"][i]["data"]["id"]) {
         cy.add({
           group: "edges",
           data: {
             id: `e${i}`,
             source: id,
-            target: `n${i}`,
-            label: dis[[curr, i]],
+            target: TSPdatas["node"][i]["data"]["id"],
+            label: dis[[curr, TSPdatas["node"][i]["data"]["id"]]],
           },
           classes: "top-center",
         });
@@ -362,10 +365,10 @@ let edgDict = {};
     // generate table
     let tb = "";
     for (let i = 0; i < TSPdatas["node_n"]; i++) {
-      if (i != id.replace("n", "")) {
-        tb += `<tr><td>${id}</td><td>n${i}</td><td>${
-          dis[[id.replace("n", ""), i]]
-        }</td></tr>`;
+      if (TSPdatas["node"][i]["data"]["id"] != id) {
+        tb += `<tr><td>${id}</td><td>${
+          TSPdatas["node"][i]["data"]["id"]
+        }</td><td>${dis[[id, TSPdatas["node"][i]["data"]["id"]]]}</td></tr>`;
       }
     }
     DOMobj.infotb.innerHTML = tb;
@@ -379,24 +382,37 @@ let edgDict = {};
 // calculate
 {
   DOMobj.start.addEventListener("click", function (e) {
+    if (UID == "") {
+      $(".mini.modal").modal("setting", "closable", false).modal("show");
+    }
     DOMobj.alert.textContent = "";
     list = [];
     for (let i = 0; i < currlist.length; i++) {
-      list.push(parseInt(currlist[i].replace(/[^0-9]/g, "")));
+      list.push(currlist[i]);
     }
     if (
       list.length == 11 &&
       list[0] == list[list.length - 1] &&
       !containsDuplicates(list.slice(0, list.length - 1))
     ) {
-      calculateObj(list);
+      let objval = calculateObj(list);
+      updateScore(UID, objval);
     } else {
       DOMobj.obj.textContent = "*";
       DOMobj.gap.textContent = "*";
       DOMobj.alert.textContent = "!!Invalid Input!!";
     }
   });
-
+  $(".mini.modal").modal("setting", {
+    onApprove: function () {
+      // console.log(DOMobj.uid_btn);
+      UID = DOMobj.uid_btn.value;
+      if (UID == "" || UID == undefined) {
+        DOMobj.uid_btn.parentNode.classList.add("error");
+        return false;
+      }
+    },
+  });
   function calculateObj(list) {
     // 計算obj值、GAP值
     let objval = 0;
@@ -419,5 +435,11 @@ let edgDict = {};
 
     DOMobj.obj.textContent = objval;
     DOMobj.gap.textContent = currgap;
+    return objval;
+  }
+  function updateScore(UID, objval) {
+    var updates = {};
+    updates["/TSP/" + UID] = objval;
+    firebase.database().ref().update(updates);
   }
 }

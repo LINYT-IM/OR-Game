@@ -3,53 +3,53 @@ var TSPdata = {
   node: [
     {
       group: "nodes",
-      data: { id: "n0" },
+      data: { id: "a" },
       position: { x: 100, y: 150 },
     },
     {
       group: "nodes",
-      data: { id: "n1" },
+      data: { id: "b" },
       position: { x: 150, y: 50 },
     },
     {
       group: "nodes",
-      data: { id: "n2" },
+      data: { id: "c" },
       position: { x: 340, y: 220 },
     },
     {
       group: "nodes",
-      data: { id: "n3" },
+      data: { id: "d" },
       position: { x: 350, y: 300 },
     },
 
     {
       group: "nodes",
-      data: { id: "n4" },
+      data: { id: "e" },
       position: { x: 300, y: 170 },
     },
     {
       group: "nodes",
-      data: { id: "n5" },
+      data: { id: "f" },
       position: { x: 390, y: 230 },
     },
     {
       group: "nodes",
-      data: { id: "n6" },
+      data: { id: "g" },
       position: { x: 400, y: 180 },
     },
     {
       group: "nodes",
-      data: { id: "n7" },
+      data: { id: "h" },
       position: { x: 540, y: 205 },
     },
     {
       group: "nodes",
-      data: { id: "n8" },
+      data: { id: "i" },
       position: { x: 600, y: 100 },
     },
     {
       group: "nodes",
-      data: { id: "n9" },
+      data: { id: "j" },
       position: { x: 650, y: 250 },
     },
     // {

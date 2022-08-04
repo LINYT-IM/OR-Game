@@ -4,7 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Traveling Salesman Problem</title>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
       integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
@@ -134,6 +136,18 @@
             <td class="alert"></td>
           </tr>
         </table>
+      </div>
+    </div>
+    <div class="ui mini modal">
+      <div class="header">提交得分</div>
+      <div class="content">
+        <p>請輸入學號or姓名</p>
+        <div class="ui input focus uid">
+          <input id="uid-ipt" type="text" placeholder="ID/Name..." />
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui positive button">確認</div>
       </div>
     </div>
     <script src="./js/TSP.js"></script>

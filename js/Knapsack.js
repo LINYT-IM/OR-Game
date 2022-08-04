@@ -10,43 +10,20 @@ let DOMobj = {
   btn: document.querySelectorAll(".ans-btn>td"),
   text_wei: document.querySelector("#weight-limit"),
   text_n: document.querySelector("#node_n"),
+  ans_change: document.querySelector(".ans-segment"),
+  uid_btn: document.querySelector("#uid-ipt"),
 };
-
-const data = {
-  n: 4,
-  weightlimit: 2000,
-  obj: {
-    0: {
-      name: "apple",
-      price: 400,
-      weight: 150,
-    },
-    1: {
-      name: "bananas",
-      price: 1500,
-      weight: 600,
-    },
-    2: {
-      name: "strawberry",
-      price: 1500,
-      weight: 300,
-    },
-    3: {
-      name: "lemon",
-      price: 3000,
-      weight: 850,
-    },
-  },
-  opt: {
-    val: 9400,
-    sol: {
-      0: 1,
-      1: 0,
-      2: 6,
-      3: 0,
-    },
-  },
-};
+firebase.initializeApp({
+  databaseURL: "https://or-game-2ef8c-default-rtdb.firebaseio.com/",
+});
+// let ipAddress = "";
+// $.getJSON("https://httpbin.org/ip", function (data) {
+//   ipAddress = data["origin"];
+// });
+let UID = "";
+// const database = firebase.database();
+var newPostKey = firebase.database().ref().child("Knapsack/").push().key;
+let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
 
 // 頁面顯示
 {
@@ -61,6 +38,7 @@ const data = {
     let pic = document.createElement("tr");
     let pic_inner = "";
     let ipt = document.createElement("tr");
+    ipt.classList.add("input-tr");
     let ipt_inner = "";
     for (let i in data["obj"]) {
       obj = data["obj"][i];
@@ -101,10 +79,11 @@ const data = {
 // 控制單元
 {
   let bestGap = 100;
-  DOMobj.start.addEventListener("click", function () {
+  function onChange() {
     let flag = true;
     let selected = document.querySelectorAll(".choice.checked");
     let selected_id = [];
+    let objval;
     clearAlert();
     for (let i = 0; i < selected.length; i++) {
       selected_id.push(parseInt(selected[i].id));
@@ -115,13 +94,32 @@ const data = {
     }
     clearResults();
     if (flag) {
-      calculateObj(selected_id);
+      objval = calculateObj(selected_id);
     }
+    return objval;
+  }
+  DOMobj.start.addEventListener("click", function () {
+    if (UID == "") {
+      $(".mini.modal").modal("setting", "closable", false).modal("show");
+    }
+    let objval = onChange();
+    var updates = {};
+    updates["/Knapsack/" + UID] = objval;
+    firebase.database().ref().update(updates);
   });
-
   DOMobj.reset.addEventListener("click", function () {
     clearAlert();
     clearChoice();
+  });
+  $(".mini.modal").modal("setting", {
+    onApprove: function () {
+      // console.log(DOMobj.uid_btn);
+      UID = DOMobj.uid_btn.value;
+      if (UID == "" || UID == undefined) {
+        DOMobj.uid_btn.parentNode.classList.add("error");
+        return false;
+      }
+    },
   });
 
   function clearResults() {
@@ -137,6 +135,7 @@ const data = {
     let objval = 0;
     let totalweight = 0;
     let currgap = 90;
+    let updated = false;
     // calculate obj
     for (let i = 0; i < selected_id.length; i++) {
       objval +=
@@ -166,5 +165,16 @@ const data = {
     DOMobj.best.textContent = bestGap;
     DOMobj.obj.textContent = objval;
     DOMobj.gap.textContent = currgap;
+    return objval;
   }
+  DOMobj.quantity.forEach((obj) =>
+    obj.addEventListener("change", function () {
+      let objval = onChange();
+    })
+  );
+  DOMobj.input.forEach((obj) =>
+    obj.addEventListener("click", function () {
+      let objval = onChange();
+    })
+  );
 }

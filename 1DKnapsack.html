@@ -4,7 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1-D Knapsack Problem</title>
+    <script src="https://www.gstatic.com/firebasejs/4.12.1/firebase.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"
+      integrity="sha512-dqw6X88iGgZlTsONxZK9ePmJEFrmHwpuMrsUChjAw1mRUhUITE5QU9pkcSox+ynfLhL15Sv2al5A0LVyDCmtUw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css"
@@ -13,6 +20,7 @@
       referrerpolicy="no-referrer"
     />
     <link rel="icon" href="images/backpack.png" type="image/x-icon" />
+    <script type="text/javascript" src="./src/KnapsackData.js"></script>
     <link rel="stylesheet" href="./css/style.css" />
     <link rel="stylesheet" href="./css/Knapsack.css" />
   </head>
@@ -71,6 +79,18 @@
             <td class="alert"></td>
           </tr>
         </table>
+      </div>
+    </div>
+    <div class="ui mini modal">
+      <div class="header">提交得分</div>
+      <div class="content">
+        <p>請輸入學號or姓名</p>
+        <div class="ui input focus uid">
+          <input id="uid-ipt" type="text" placeholder="ID/Name..." />
+        </div>
+      </div>
+      <div class="actions">
+        <div class="ui positive button">確認</div>
       </div>
     </div>
     <script src="./js/Knapsack.js"></script>

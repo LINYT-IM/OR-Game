@@ -12,6 +12,10 @@ body {
   animation-fill-mode: forwards;
 }
 
+.input-tr > td {
+  width: 100%;
+}
+
 .Knapsack {
   height: 80vh;
   float: left;
@@ -102,8 +106,8 @@ img {
 }
 
 .quan > input.quantity {
-  width: inherit;
-  max-width: 60%;
+  width: 100%;
+  /* max-width: 30%; */
 }
 
 #result {
