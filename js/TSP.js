@@ -79,6 +79,7 @@ let dis = {};
 let UID = "";
 let res = {
   bestGap: 100,
+  obj: 0,
 };
 const DOMobj = {
   infotb: document.querySelector(".detail-t>tbody"),
@@ -204,6 +205,9 @@ let edgDict = {};
       currlist.push(currnode);
     }
     updateInputField();
+    if (checkValid(currlist)) {
+      let flag = calculateObj(currlist);
+    }
   });
 
   DOMobj.reset.addEventListener("click", function (evt) {
@@ -237,15 +241,17 @@ let edgDict = {};
 
   DOMobj.ans.addEventListener("change", function (evt) {
     list_str = this.value;
-    list = [];
+    // list = [];
     currl = [];
     for (let i = 0; i < list_str.length; i++) {
-      list.push(list_str[i]);
+      // list.push(list_str[i]);
       currl.push(list_str[i]);
     }
     DOMobj.alert.textContent = "";
-    if (checkValid(list)) {
-      drawEdges(list);
+    if (checkValid(currl)) {
+      drawEdges(currl);
+      // calculate obj
+      let flag = calculateObj(currl);
     } else {
       DOMobj.alert.textContent = "!!Invalid Input!!";
     }
@@ -378,14 +384,23 @@ let edgDict = {};
     DOMobj.infotb.innerHTML = "";
     DOMobj.infotb.parentNode.classList.add("hidden");
   }
-}
-// calculate
-{
+
+  // calculate
+
   DOMobj.start.addEventListener("click", function (e) {
     if (UID == "") {
       $(".mini.modal").modal("setting", "closable", false).modal("show");
     }
     DOMobj.alert.textContent = "";
+    if (calculateObj(list)) {
+      updateScore(UID, res["obj"], list);
+    } else {
+      DOMobj.obj.textContent = "*";
+      DOMobj.gap.textContent = "*";
+      DOMobj.alert.textContent = "!!Invalid Input!!";
+    }
+  });
+  function checkGap(currlist) {
     list = [];
     for (let i = 0; i < currlist.length; i++) {
       list.push(currlist[i]);
@@ -395,14 +410,12 @@ let edgDict = {};
       list[0] == list[list.length - 1] &&
       !containsDuplicates(list.slice(0, list.length - 1))
     ) {
-      let objval = calculateObj(list);
-      updateScore(UID, objval);
+      return true;
     } else {
-      DOMobj.obj.textContent = "*";
-      DOMobj.gap.textContent = "*";
-      DOMobj.alert.textContent = "!!Invalid Input!!";
+      return false;
     }
-  });
+  }
+
   $(".mini.modal").modal("setting", {
     onApprove: function () {
       // console.log(DOMobj.uid_btn);
@@ -410,10 +423,13 @@ let edgDict = {};
       if (UID == "" || UID == undefined) {
         DOMobj.uid_btn.parentNode.classList.add("error");
         return false;
+      } else {
+        updateScore(UID, res["obj"], currlist);
       }
     },
   });
   function calculateObj(list) {
+    DOMobj.alert.textContent = "";
     // 計算obj值、GAP值
     let objval = 0;
     let totalweight = 0;
@@ -423,23 +439,34 @@ let edgDict = {};
       // console.log(DOMobj.quantity[selected_id[i]].value);
       objval += dis[[list[i], list[i + 1]]];
     }
-
+    res["obj"] = objval;
     // calculate gap
-    currgap =
-      Math.round(((objval - TSPdatas["Opt"]["optval"]) / objval) * 10000) / 100;
+    if (checkGap(list)) {
+      currgap =
+        Math.round(((objval - TSPdatas["Opt"]["optval"]) / objval) * 10000) /
+        100;
 
-    if (currgap < res["bestGap"]) {
-      res["bestGap"] = currgap;
+      if (currgap < res["bestGap"]) {
+        res["bestGap"] = currgap;
+      }
+    } else {
+      currgap = "*";
+      DOMobj.alert.textContent = "!!Infeasible!!";
     }
     DOMobj.best.textContent = res["bestGap"];
-
-    DOMobj.obj.textContent = objval;
     DOMobj.gap.textContent = currgap;
-    return objval;
+    DOMobj.obj.textContent = objval;
+    return [objval, checkGap(list)];
   }
-  function updateScore(UID, objval) {
-    var updates = {};
-    updates["/TSP/" + UID] = objval;
-    firebase.database().ref().update(updates);
+  function updateScore(UID, objval, list) {
+    if (UID == "") {
+      $(".mini.modal").modal("setting", "closable", false).modal("show");
+    } else {
+      // console.log(UID);
+      var updates = {};
+      updates["/TSP/val/" + UID] = objval;
+      updates["/TSP/sol/" + UID] = list;
+      firebase.database().ref().update(updates);
+    }
   }
 }

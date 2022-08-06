@@ -21,9 +21,14 @@ firebase.initializeApp({
 //   ipAddress = data["origin"];
 // });
 let UID = "";
+let res = {
+  obj: 0,
+  sol: {},
+};
 // const database = firebase.database();
 var newPostKey = firebase.database().ref().child("Knapsack/").push().key;
-let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
+// let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
+let data = window.Knapsackdata[0];
 
 // 頁面顯示
 {
@@ -81,6 +86,8 @@ let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
   let bestGap = 100;
   function onChange() {
     let flag = true;
+    let final = false;
+
     let selected = document.querySelectorAll(".choice.checked");
     let selected_id = [];
     let objval;
@@ -94,19 +101,27 @@ let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
     }
     clearResults();
     if (flag) {
-      objval = calculateObj(selected_id);
+      final = calculateObj(selected_id);
     }
-    return objval;
+    return final;
   }
   DOMobj.start.addEventListener("click", function () {
     if (UID == "") {
       $(".mini.modal").modal("setting", "closable", false).modal("show");
     }
-    let objval = onChange();
-    var updates = {};
-    updates["/Knapsack/" + UID] = objval;
-    firebase.database().ref().update(updates);
+    let flag = onChange();
+    if (flag) {
+      updateScore(UID, res["obj"], res["sol"]);
+    }
   });
+  function updateScore(UID, score, sol) {
+    if (UID != "") {
+      var updates = {};
+      updates["/Knapsack/val/" + UID] = score;
+      updates["/Knapsack/sol/" + UID] = sol;
+      firebase.database().ref().update(updates);
+    }
+  }
   DOMobj.reset.addEventListener("click", function () {
     clearAlert();
     clearChoice();
@@ -118,6 +133,8 @@ let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
       if (UID == "" || UID == undefined) {
         DOMobj.uid_btn.parentNode.classList.add("error");
         return false;
+      } else {
+        updateScore(UID, res["obj"], res["sol"]);
       }
     },
   });
@@ -136,8 +153,11 @@ let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
     let totalweight = 0;
     let currgap = 90;
     let updated = false;
+    let solution = {};
+    let flag = false;
     // calculate obj
     for (let i = 0; i < selected_id.length; i++) {
+      solution[selected_id[i]] = DOMobj.quantity[selected_id[i]].value;
       objval +=
         DOMobj.quantity[selected_id[i]].value *
         data["obj"][selected_id[i]]["price"];
@@ -145,7 +165,6 @@ let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
         DOMobj.quantity[selected_id[i]].value *
         data["obj"][selected_id[i]]["weight"];
     }
-
     if (totalweight > data["weightlimit"]) {
       // infeasible
       objval = "*";
@@ -153,6 +172,9 @@ let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
       DOMobj.alert.textContent = "infeasible!!";
     } else {
       // calculate gap
+      flag = true;
+      res["obj"] = objval;
+      res["sol"] = solution;
       currgap =
         Math.round(
           ((data["opt"]["val"] - objval) / data["opt"]["val"]) * 10000
@@ -165,16 +187,16 @@ let data = window.Knapsackdata[Math.floor(Math.random() * 5)];
     DOMobj.best.textContent = bestGap;
     DOMobj.obj.textContent = objval;
     DOMobj.gap.textContent = currgap;
-    return objval;
+    return flag;
   }
   DOMobj.quantity.forEach((obj) =>
     obj.addEventListener("change", function () {
-      let objval = onChange();
+      let flag = onChange();
     })
   );
   DOMobj.input.forEach((obj) =>
     obj.addEventListener("click", function () {
-      let objval = onChange();
+      let flag = onChange();
     })
   );
 }
