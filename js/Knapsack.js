@@ -4,6 +4,7 @@ let DOMobj = {
   reset: document.querySelector(".reset-Knapsack"),
   ans: document.querySelector(".checked"),
   obj: document.querySelector(".Obj"),
+  wig: document.querySelector(".Weight"),
   gap: document.querySelector(".Gap"),
   best: document.querySelector(".Best"),
   alert: document.querySelector(".alert"),
@@ -114,11 +115,12 @@ let data = window.Knapsackdata[0];
       updateScore(UID, res["obj"], res["sol"]);
     }
   });
-  function updateScore(UID, score, sol) {
+  function updateScore(UID, score, sol, weight) {
     if (UID != "") {
       var updates = {};
       updates["/Knapsack/val/" + UID] = score;
       updates["/Knapsack/sol/" + UID] = sol;
+      updates["/Knapsack/weight/" + UID] = weight;
       firebase.database().ref().update(updates);
     }
   }
@@ -134,7 +136,7 @@ let data = window.Knapsackdata[0];
         DOMobj.uid_btn.parentNode.classList.add("error");
         return false;
       } else {
-        updateScore(UID, res["obj"], res["sol"]);
+        updateScore(UID, res["obj"], res["sol"], res["weight"]);
       }
     },
   });
@@ -169,12 +171,14 @@ let data = window.Knapsackdata[0];
       // infeasible
       objval = "*";
       currgap = "*";
+      res["weight"] = "*";
       DOMobj.alert.textContent = "infeasible!!";
     } else {
       // calculate gap
       flag = true;
       res["obj"] = objval;
       res["sol"] = solution;
+      res["weight"] = totalweight;
       currgap =
         Math.round(
           ((data["opt"]["val"] - objval) / data["opt"]["val"]) * 10000
@@ -187,6 +191,7 @@ let data = window.Knapsackdata[0];
     DOMobj.best.textContent = bestGap;
     DOMobj.obj.textContent = objval;
     DOMobj.gap.textContent = currgap;
+    DOMobj.wig.textContent = res["weight"];
     return flag;
   }
   DOMobj.quantity.forEach((obj) =>
