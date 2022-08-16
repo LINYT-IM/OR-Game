@@ -7,6 +7,18 @@ let graphwidth = {
   show: document.querySelector("#cy-show").offsetWidth,
   ans: document.querySelector("#cy").offsetWidth,
 };
+const alphabet = {
+  a: 0,
+  b: 1,
+  c: 2,
+  d: 3,
+  e: 4,
+  f: 5,
+  g: 6,
+  h: 7,
+  i: 8,
+  j: 9,
+};
 const params = {
   style: [
     // the stylesheet for the graph
@@ -241,12 +253,14 @@ let edgDict = {};
   }
 
   DOMobj.ans.addEventListener("change", function (evt) {
-    list_str = this.value;
+    list_str = this.value.replace(/\s/g, "").split(",");
     // list = [];
     currl = [];
     for (let i = 0; i < list_str.length; i++) {
       // list.push(list_str[i]);
-      currl.push(list_str[i]);
+      if (list_str[i] in alphabet) {
+        currl.push(list_str[i]);
+      }
     }
     DOMobj.alert.textContent = "";
     if (checkValid(currl)) {
@@ -331,7 +345,7 @@ let edgDict = {};
   function drawEdges(currlist) {
     resetEdge();
     for (let i = 0; i < currlist.length - 1; i++) {
-      addEdge(cy, `n${currlist[i]}`, `n${currlist[i + 1]}`);
+      addEdge(cy, `${currlist[i]}`, `${currlist[i + 1]}`);
     }
   }
 
