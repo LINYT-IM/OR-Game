@@ -137,13 +137,14 @@ var cy_show = cytoscape({
   for (let i in node) {
     for (let j in node) {
       if (i != j) {
-        dis[[i, j]] = Math.round(
-          Math.sqrt(
-            Math.pow(node[i][0] - node[j][0], 2) +
-              Math.pow(node[i][1] - node[j][1], 2)
-          ) / 100,
-          2
-        );
+        dis[[i, j]] =
+          Math.round(
+            Math.sqrt(
+              Math.pow(node[i][0] - node[j][0], 2) +
+                Math.pow(node[i][1] - node[j][1], 2)
+            ),
+            2
+          ) / 100;
       }
     }
   }
