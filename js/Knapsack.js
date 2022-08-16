@@ -25,6 +25,7 @@ let UID = "";
 let res = {
   obj: 0,
   sol: {},
+  weight: 0,
 };
 // const database = firebase.database();
 var newPostKey = firebase.database().ref().child("Knapsack/").push().key;
@@ -112,7 +113,7 @@ let data = window.Knapsackdata[0];
     }
     let flag = onChange();
     if (flag) {
-      updateScore(UID, res["obj"], res["sol"]);
+      updateScore(UID, res["obj"], res["sol"], res["weight"]);
     }
   });
   function updateScore(UID, score, sol, weight) {
