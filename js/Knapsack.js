@@ -26,6 +26,7 @@ let res = {
   obj: 0,
   sol: {},
   weight: 0,
+  gap: 100,
 };
 // const database = firebase.database();
 var newPostKey = firebase.database().ref().child("Knapsack/").push().key;
@@ -85,7 +86,6 @@ let data = window.Knapsackdata[0];
 
 // 控制單元
 {
-  let bestGap = 100;
   function onChange() {
     let flag = true;
     let final = false;
@@ -113,15 +113,17 @@ let data = window.Knapsackdata[0];
     }
     let flag = onChange();
     if (flag) {
-      updateScore(UID, res["obj"], res["sol"], res["weight"]);
+      updateScore(UID, res["obj"], res["sol"], res["weight"], res["gap"]);
     }
   });
-  function updateScore(UID, score, sol, weight) {
+  function updateScore(UID, score, sol, weight, gap) {
     if (UID != "") {
       var updates = {};
       updates["/Knapsack/val/" + UID] = score;
       updates["/Knapsack/sol/" + UID] = sol;
       updates["/Knapsack/weight/" + UID] = weight;
+      updates["/Knapsack/gap/" + UID] = gap;
+      updates["/Knapsack/name/" + UID] = "KNP";
       firebase.database().ref().update(updates);
     }
   }
@@ -137,7 +139,7 @@ let data = window.Knapsackdata[0];
         DOMobj.uid_btn.parentNode.classList.add("error");
         return false;
       } else {
-        updateScore(UID, res["obj"], res["sol"], res["weight"]);
+        updateScore(UID, res["obj"], res["sol"], res["weight"], res["gap"]);
       }
     },
   });
@@ -185,11 +187,11 @@ let data = window.Knapsackdata[0];
           ((data["opt"]["val"] - objval) / data["opt"]["val"]) * 10000
         ) / 100;
 
-      if (currgap < bestGap) {
-        bestGap = currgap;
+      if (currgap < res["gap"]) {
+        res["gap"] = currgap;
       }
     }
-    DOMobj.best.textContent = bestGap;
+    DOMobj.best.textContent = res["gap"];
     DOMobj.obj.textContent = objval;
     DOMobj.gap.textContent = currgap;
     DOMobj.wig.textContent = res["weight"];

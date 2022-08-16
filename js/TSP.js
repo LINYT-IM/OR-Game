@@ -411,7 +411,7 @@ let edgDict = {};
     }
     DOMobj.alert.textContent = "";
     if (calculateObj(list)) {
-      updateScore(UID, res["obj"], list);
+      updateScore(UID, res["obj"], list, res["bestGap"]);
     } else {
       DOMobj.obj.textContent = "*";
       DOMobj.gap.textContent = "*";
@@ -442,7 +442,7 @@ let edgDict = {};
         DOMobj.uid_btn.parentNode.classList.add("error");
         return false;
       } else {
-        updateScore(UID, res["obj"], currlist);
+        updateScore(UID, res["obj"], currlist, res["bestGap"]);
       }
     },
   });
@@ -476,7 +476,7 @@ let edgDict = {};
     DOMobj.obj.textContent = objval;
     return [objval, checkGap(list)];
   }
-  function updateScore(UID, objval, list) {
+  function updateScore(UID, objval, list, gap) {
     if (UID == "") {
       $(".mini.modal").modal("setting", "closable", false).modal("show");
     } else {
@@ -484,6 +484,8 @@ let edgDict = {};
       var updates = {};
       updates["/TSP/val/" + UID] = objval;
       updates["/TSP/sol/" + UID] = list;
+      updates["/TSP/gap/" + UID] = gap;
+      updates["/TSP/name/" + UID] = "TSP";
       firebase.database().ref().update(updates);
     }
   }
