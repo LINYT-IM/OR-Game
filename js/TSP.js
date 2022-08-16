@@ -122,6 +122,9 @@ var cy_show = cytoscape({
 });
 // 頁面顯示
 {
+  $("head").append(
+    "< meta name=”viewport” content=”width=1280, initial-scale=0.5, maximum-scale=3.0, user-scalable=1″>"
+  );
   window.addEventListener("resize", function (event) {
     graphwidth["ans"] = document.querySelector("#cy").offsetWidth;
     graphwidth["show"] = document.querySelector("#cy-show").offsetWidth;

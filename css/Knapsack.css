@@ -21,6 +21,7 @@ body {
   float: left;
   top: 55%;
   left: 40%;
+  overflow: scroll;
   /* position: relative; */
   /* display: flex; */
 }
