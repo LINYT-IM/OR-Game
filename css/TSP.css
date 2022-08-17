@@ -167,6 +167,7 @@ img {
   width: 20vw;
   font-size: 50px;
   color: #777;
+  overflow: scroll;
   /* position: fixed; */
 }
 

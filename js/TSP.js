@@ -410,8 +410,8 @@ let edgDict = {};
       $(".mini.modal").modal("setting", "closable", false).modal("show");
     }
     DOMobj.alert.textContent = "";
-    if (calculateObj(list)) {
-      updateScore(UID, res["obj"], list, res["bestGap"]);
+    if (calculateObj(currlist)) {
+      updateScore(UID, res["obj"], currlist, res["bestGap"]);
     } else {
       DOMobj.obj.textContent = "*";
       DOMobj.gap.textContent = "*";
@@ -428,8 +428,10 @@ let edgDict = {};
       list[0] == list[list.length - 1] &&
       !containsDuplicates(list.slice(0, list.length - 1))
     ) {
+      // console.log("true");
       return true;
     } else {
+      // console.log("false");
       return false;
     }
   }
@@ -458,6 +460,7 @@ let edgDict = {};
       objval += dis[[list[i], list[i + 1]]];
     }
     res["obj"] = objval;
+    // console.log(res["obj"]);
     // calculate gap
     if (checkGap(list)) {
       currgap =
@@ -465,6 +468,7 @@ let edgDict = {};
         100;
 
       if (currgap < res["bestGap"]) {
+        res["obj"] = objval;
         res["bestGap"] = currgap;
       }
     } else {
@@ -474,7 +478,7 @@ let edgDict = {};
     DOMobj.best.textContent = res["bestGap"];
     DOMobj.gap.textContent = currgap;
     DOMobj.obj.textContent = objval;
-    return [objval, checkGap(list)];
+    return checkGap(list);
   }
   function updateScore(UID, objval, list, gap) {
     if (UID == "") {
